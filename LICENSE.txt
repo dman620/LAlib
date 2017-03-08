@@ -1,0 +1,26 @@
+DEREK'S SIMPLE OPEN LICENSE (dSOL)
+
+version 01 (March 04, 2017)
+
+Copyright(C) 2017 Derek Mandl (homeses@gmail.com)
+
+Regarding this license itself:
+Anyone can modify and distribute this license as they see fit.
+However, if the terms of the license are changed, then the name of the license must also be changed.
+
+Regarding the software that is being protected by this license:
+All work is open sourced and can be copied, distributed, or modified under the following terms:
+
+    1. The software* or any copied works* must include a copy of this license, as well as either
+       a link where the source of the software can be found, or the source itself.
+    2. The author of the software must be credited for the part(s) of the software that is used.
+    3. The software or copied works may not be sold for a profit.
+    4. The software may not be re distributed in any way as closed source.
+
+
+Any software covered under this license is provided with NO WARRANTY.
+The owner of the software can never be held liable for ANY damage caused by use of the software.
+
+*(The software that is protected under this license is referred to as "the software" or "this software")
+
+**(Software projects that use this software or parts of it are referred to as "copied works")
