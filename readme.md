@@ -1,5 +1,7 @@
-#LAlib readme
-##Hello
+# LAlib readme
+
+## Hello
+
 This is the readme for my Linear algebra library called LAlib.
 
 This is the sole programmer for the library, Derek Mandl.  I am writing this library primarily for learning reasons, and for practice, and also to use in a program I will write in the future codenamed compass.
