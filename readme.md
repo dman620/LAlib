@@ -12,6 +12,7 @@ I also have no problem with constructive input or feedback, but I am mainly doin
 
 This is being built on Ubuntu v16.04
 
+the .h file and the .cpp file are the entire library, basically.  I also have a .error file, which houses error codes that I plan to use once the library is more developed.
 
 That being said, as I write more I will add to this readme.
 
