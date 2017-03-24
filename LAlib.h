@@ -1,19 +1,40 @@
 /*this is Derek's Linear Algebra library, called LAlib
 Programmer: Derek Mandl
 Start Date: 2/25/2017
-Goals:
-create the following:
-1. class for matrix.  At first I thought to have multiple classes, but I
-  have realized that it will me much more simple if I only have one class
-  called Matrix
+Goals(to do list):
 2. functions to fill the matrix and access information first
-3. functions to do matrix operations.
-4. finished
+3. functions to do matrix operations. (addition, multiplication, etc)
+4. advanced operations (determinant, system solutions, etc)
+   this goes beyond the scope of what I will use this for.
+lastly: optimize. Mostly the multiplication probably.  Everything else is trivial
 
-I had arrays to implement matrix before, but now I am using vector,
-so that this library will be able to handle matrices of any size once
-it is complete
+the following is to make my algorithms easier to understand
+--------------------------------------------------------------------------
+TO CLEAR UP AMBIGUITY ABOUT HOW THE VECTORS ARE CONSTRUCTED:
+If a matrix is nxm, then when we talk about (i, j)
+then i corresponds to the ith element of every inside
+vector
+and j corresponds to the vectors on the inside, i.e. the jth
+element of the containing vector.
+this is a picture to help visualize how my algorihms will do work:
 
+
+  [i,j] i corresponds to m and j corresponds to n when we use for loops
+        this seems very confusing at first.
+	it is backwards because n indicates how many rows there are, which
+	is also the size of the collumns.
+
+   [0,0|0,1|0,2] <--there are 3 elements of this vector,
+    1,0|1,1|1,2            each one is a vector.
+    2,0|2,1|2,2    for the purpose of calculations, the matrices will be
+    3,0|3,1|3,2    "oriented" like this.
+
+
+in order to access the (i, j)th element we use matrixname.data[i][j].
+this format can only be used inside the member functions, since data
+is private.
+
+    
 
 */
 
@@ -27,10 +48,13 @@ using std::make_pair;
 using std::pair;
 using std::initializer_list;
 using std::cout; using std::cin;
+using std::istream; using std::ostream;
 
 //std_matrix means vector of vectors.
 //using vec<vec> > can get confuing in a hurry, so I used this
 using std_matrix = vector<vector<double> >;
+
+
 
 class Matrix{
  private:
@@ -38,6 +62,9 @@ class Matrix{
   pair<int, int> order;
  public:
   Matrix() = default;
+
+  //fill a matrix to nxm with 0 in every cell
+  Matrix(int n, int m);
 
   //GETTERS:
 
@@ -63,14 +90,19 @@ class Matrix{
   //it needs to check if the i and j are in the bounds of the order
   void setElement(int i, int j);
   
-  //void fill Matrix.
+  //void fillMatrixE
+  //this will fill a matrix to nxm with all values equal to 0
+  //that's about it! it will be used for constructor and other fillers
+  void fillMatrixE(int n, int m);
+  
+  //void fill MatrixI.
   //I want to use this for debugging, so i can quickly fill a matrix
   //with values I choose at run time.
-  //it also needs to erase all data before filling it with user input.
-  //right now, it will accept an n and m to fill it to a certain size.
+  //it needs an isteam, such as cin or an ifstream
   //it is important to note that it fills the first COLLUMN first, then moves
-  //to the next collumn.  This is oposite of what someone might find intuitive
-  void fillMatrixu(int n, int m); //u stands for user
+  //to the next collumn.  This is oposite of what someone might find intuitive.  I am trying to change this right now
+  void fillMatrixI(int n, int m, istream& in); // I stands for input stream
+
 
   //void fillMatrixr:
   //this is like the last one, but it will fill the matrix to order nxm
@@ -92,6 +124,12 @@ class Matrix{
   //vector that holds the data vectors.  This will earase all elements.
   //also it needs to set the order to (0x0)
   void reset();
+
+  //void print(ostream& out);
+  //this prints the contents of the matrix by row.
+  //this means the i and j will be backwards again so that rows will come first
+  //it only requires the ostream that you want to use
+  void print(ostream& out);
 };
 
 
