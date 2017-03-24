@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11 -c -Wall
+CFLAGS = -std=c++14 -c -Wall
 SRCS = LAlib.cpp
 OBJS = $(SRCS:.cpp=.o)
 HEADERS = LAlib.h

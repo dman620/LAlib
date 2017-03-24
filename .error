@@ -1,0 +1,7 @@
+01 - order mismatch
+   the order of a matrix is the (number of rows X number of collumns).
+   this error means that matrices were operated on with mismatching orders.
+   this could occur in multiple areas:
+   -Perhaps you tried to multiply two matrices that do not qualify for matrix multiplication.
+   -Perhaps you tried to fill a matrix with matrices that do not have a matching number of rows.
+   -Perhaps you tried to do another operation to two matrices that do not have the correct relative orders to do the operation.
