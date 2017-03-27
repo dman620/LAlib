@@ -4,8 +4,9 @@ Start Date: 2/25/2017
 Goals(to do list):
 2. functions to fill the matrix and access information first
 3. functions to do matrix operations. (addition, multiplication, etc)
-4. advanced operations (determinant, system solutions, etc)
+4. advanced operations (determinant, system solutions, span,  etc)
    this goes beyond the scope of what I will use this for.
+5. perhaps I will add other classes, such as subspace
 lastly: optimize. Mostly the multiplication probably.  Everything else is trivial
 
 the following is to make my algorithms easier to understand
@@ -71,7 +72,7 @@ class Matrix{
   //pair<int, int> getOrder();
   //this function returns the order of a matrix as a pair, so
   //to use it we must use mymatrix.getOrder().first or .second;
-  pair<int, int> getOrder();
+  pair<int, int> getOrder()const;
 
   //SETTERS:
 
@@ -93,7 +94,7 @@ class Matrix{
   //void fillMatrixE
   //this will fill a matrix to nxm with all values equal to 0
   //that's about it! it will be used for constructor and other fillers
-  void fillMatrixE(int n, int m);
+  void fillMatrixE(int n, int m); //E stands for empty
   
   //void fill MatrixI.
   //I want to use this for debugging, so i can quickly fill a matrix
@@ -130,6 +131,12 @@ class Matrix{
   //this means the i and j will be backwards again so that rows will come first
   //it only requires the ostream that you want to use
   void print(ostream& out);
-};
 
+  //mult operator overload
+  //this is exactly what it sounds like, it multiplies
+  //matrices together to form a new matrix which is the product.
+  Matrix operator* (const Matrix& m1);
+
+
+};
 
