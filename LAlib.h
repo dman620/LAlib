@@ -43,13 +43,20 @@ is private.
 #include <utility>
 #include <vector>
 #include <initializer_list>
+#include <random>
+#include <fstream>
+#include <string>
 
+using std::string;
 using std::vector;
 using std::make_pair;
 using std::pair;
 using std::initializer_list;
 using std::cout; using std::cin;
 using std::istream; using std::ostream;
+using std::default_random_engine;
+using std::uniform_int_distribution;
+using std::ifstream; using std::ofstream;
 
 //std_matrix means vector of vectors.
 //using vec<vec> > can get confuing in a hurry, so I used this
@@ -60,6 +67,7 @@ using std_matrix = vector<vector<double> >;
 class Matrix{
  private:
   std_matrix data;
+
   //pair is (# of rows, # of collumns)
   //which is also
   //        (size of collumns, size of rows)
@@ -69,6 +77,13 @@ class Matrix{
 
   //fill a matrix to nxm with 0 in every cell
   Matrix(unsigned n, unsigned m);
+
+  //fill a matrix using istream
+  Matrix(unsigned n, unsigned m, istream& in);
+
+  //fill matrix using other matrices
+  Matrix(initializer_list<Matrix> matrices);
+  
 
   //GETTERS:
 
@@ -92,7 +107,6 @@ class Matrix{
   //A is the matrix, and i is the row number, and j is the collumn number
   //in a 2d vector, this means data[i][j]
   //it needs to check if the i and j are in the bounds of the order
-
   void setElement(unsigned i, unsigned j);
   
   //void fillMatrixE
@@ -106,7 +120,8 @@ class Matrix{
   //it needs an isteam, such as cin or an ifstream
   //it is important to note that it fills the first COLLUMN first, then moves
   //to the next collumn.  This is oposite of what someone might find intuitive.  I am trying to change this right now
-  void fillMatrixI(unsigned n, unsigned m, istream& in); // I stands for input stream
+  void fillMatrixI(unsigned n, unsigned m, istream& in);
+  // I stands for input stream
 
 
   //void fillMatrixR:
@@ -114,14 +129,26 @@ class Matrix{
   //with random values
   //I will write them so that they can be used on empty or already filled
   //matrices.  That means they need to erase the matrix before filling it
-  void fillMatrixR(unsigned n, unsigned m);//r stands for random
+  void fillMatrixR(unsigned n, unsigned m, int low_bound, int high_bound);
+  //r stands for random,
 
   //void fillMatrixL:
   //this is a function that fills a matrix, given an initializer list
   //of matrices that have the same number of rows (if they are nxm, then
   //their n values are equal.
-  void fillMatrixL(initializer_list<Matrix> matrices);//l stands for list
+  void fillMatrixL(initializer_list<Matrix> matrices);
+  //l stands for list
 
+  //void fillMatrixF
+  //fills a matrix from input from a file.
+  //it will take the input such that, if the numbers in the file are
+  //seperated by whitespace, and arranged in a square, it will fill
+  //the matrix accordingly. i.e. it will take the first number and put
+  //it in the top left cell, then the second number it encounters will
+  //go in the cell to the right, and so on.
+  //void fillMatrixF(unsigned n, unsigned m, string filename);
+  //F stands for file
+  
   //void reset();
   //this will do as it sounds, and reset the matrix fully to an empty matrix
   //with zero elements.

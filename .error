@@ -1,7 +1,20 @@
-01 - order mismatch
+01 - order mismatch:
    the order of a matrix is the (number of rows X number of collumns).
    this error means that matrices were operated on with mismatching orders.
    this could occur in multiple areas:
    -Perhaps you tried to multiply two matrices that do not qualify for matrix multiplication.
    -Perhaps you tried to fill a matrix with matrices that do not have a matching number of rows.
    -Perhaps you tried to do another operation to two matrices that do not have the correct relative orders to do the operation.
+
+02 - invalid bounds:
+   the bounds of a function are reversed.  i.e. the lower bound is higher than the upper bound.
+   -Perhaps you specified invalid bounds while using the fillMatrixR function.
+
+03 - file not found:
+   the file specified does not exist.
+   You have attempted to open a file that does not exist.
+   -Perhaps you made an error while using the fillMatrixF function.
+
+04 - expected integer:
+   a function expected an integer, and it got something that is not an integer.
+   -perhaps you have a stray string in a fill function's arg list or a constructor's arg list.

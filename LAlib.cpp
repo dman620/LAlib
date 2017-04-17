@@ -10,6 +10,15 @@ Matrix::Matrix(unsigned n, unsigned m){
   fillMatrixE(n, m);
 }
 
+Matrix::Matrix(unsigned n, unsigned m, istream& in){
+  fillMatrixI(n, m, in);
+}
+
+Matrix::Matrix(initializer_list<Matrix> matrices){
+  fillMatrixL(matrices);
+}
+
+
 //GETTERS:
 pair<unsigned, unsigned> Matrix::getOrder()const{
   return order;
@@ -50,13 +59,32 @@ void Matrix::reset(){
   data.clear();
 }//end func
 
+void Matrix::fillMatrixR(unsigned n, unsigned m, int low_bound, int high_bound){
+  default_random_engine dre;
+  if(low_bound > high_bound){
+    cout << "ERROR 02 - INVALID BOUNDS\n";
+    return;
+  }
+  uniform_int_distribution<int> dr(low_bound, high_bound);
+  dre.seed(time(nullptr));
+
+  fillMatrixE(n, m);
+  
+  for(unsigned i = 0; i < n; i++){
+    for(unsigned j = 0; j < m; j++){
+      data[i][j] = dr(dre);
+      //cout << dr(dre) << " ";
+    }//end for#2
+  }//end for#1
+}//end func
+
 void Matrix::fillMatrixL(initializer_list<Matrix> matrices){
   unsigned num_of_rows = matrices.begin()->order.first;
   unsigned num_of_collumns = 0;
   for(Matrix args : matrices){ //for all arguments in the init. list
     if(args.order.first != num_of_rows){
       cout << "ERROR 01 - ORDER MISMATCH\n";
-      break;
+      return;
       }
     num_of_collumns += args.order.second;
   }
@@ -68,19 +96,22 @@ void Matrix::fillMatrixL(initializer_list<Matrix> matrices){
     for(unsigned j = 0; j < args.order.second; j++){
       data[i] = args.data[j];
       i++;
-    }
-  }
-
-
-
+    }//end for j
+  }//end for args
 }//end func
 
 
 /*
 void Matrix::fillMatrixF(unsigned n, unsigned m, string filename){
+  ifstream fin;
+  fin.open(filename);
+  if(fin.fail()){
+    cout << "ERROR 03 - FILE NOT FOUND\n";
+    return;
+  }
 
-}*/
-
+}
+*/
 
 void Matrix::print(ostream& out){
   order = getOrder();
@@ -94,6 +125,22 @@ void Matrix::print(ostream& out){
   }//end for#1
 }//end func
 
+/*
+void Matrix::print_clean(ostream& out){
+
+}
+this is a planned function which will print a matrix, but it will
+insert spaces as needed to make each column appear to be in a
+collumn.  imagine a matrix with values 1 1 10000 1 1
+the extra 0's in the 10000 will throw the others off and make them
+appear to not be in a collumn.  this will be easy to fix, with %10
+operations and inserting spaces
+i will need a func called find_largest_value
+
+double Matrix::find_largest_value(){
+
+}
+*/
 
 Matrix Matrix::operator* (const Matrix& m1){
   Matrix product;
@@ -119,9 +166,9 @@ Matrix Matrix::operator* (const Matrix& m1){
     for(unsigned i = 0; i < m; i++){
       for(unsigned j = 0; j < n; j++){
 	product.data[i][j] += data[k][j]*m1.data[i][k];
-      }//end for#3
-    }//end for#2
-  }//end for#2
+      }//end forj
+    }//end fori
+  }//end fork
   
 return product;
 }//end func
@@ -151,17 +198,24 @@ int main(){
   Matrix matrix2;
   Matrix matrix3;
 
+  //this creates some sort of memory error, however everything works
+  //flawlessly when I make them all 2 x 2so that's either it has to
+  //be square or it has to be small.  I will fix later
+
+  
+  
+  /*initializer list test
   matrix1.fillMatrixI(4, 2, cin);
   matrix2.fillMatrixI(4, 1, cin);
   matrix3.fillMatrixL({matrix1, matrix2});
-  
+  */
 
   /*multiplication test
   matrix1.fillMatrixI(2, 4, cin);
   matrix2.fillMatrixI(4, 2, cin);
   matrix3 = matrix1*matrix2;
   */
-  //constructor testing:
+ 
   
   
   matrix1.print(cout);
