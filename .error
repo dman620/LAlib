@@ -13,7 +13,6 @@
 03 - file not found:
    the file specified does not exist.
    You have attempted to open a file that does not exist.
-   -Perhaps you made an error while using the fillMatrixF function.
 
 04 - expected integer:
    a function expected an integer, and it got something that is not an integer.

@@ -12,8 +12,10 @@ I also have no problem with constructive input or feedback, but I am mainly doin
 
 This is being built on Ubuntu v16.04
 
-the .h file and the .cpp file are the entire library, basically.  I also have a .error file, which houses error codes that I plan to use once the library is more developed.
+the .h file and the .cpp file are the entire library, basically.  I also have a .error file, which houses error codes, just incase you are not sure why my functions are not behaving
 
-That being said, as I write more I will add to this readme.
+You can also use the makefile if you wish, it was written to build a program for debugging, so you will have to update it if you wish to use it for your program.
+
+It is fully finished now, so what you see is what you get.
 
 Dman out

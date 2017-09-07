@@ -1,13 +1,9 @@
 /*this is Derek's Linear Algebra library, called LAlib
 Programmer: Derek Mandl
 Start Date: 2/25/2017
-Goals(to do list):
-2. functions to fill the matrix and access information & constructors first
-3. functions to do matrix operations. (addition, multiplication, etc)
-4. advanced operations (determinant, system solutions, span,  etc)
-   this goes beyond the scope of what I will use this for.
-5. perhaps I will add other classes, such as subspace
-lastly: optimize. Mostly the multiplication probably.  Everything else is trivial
+Finish Date: 9/7/2017
+
+
 
 the following is to make my algorithms easier to understand
 --------------------------------------------------------------------------
@@ -34,6 +30,7 @@ this is a picture to help visualize how my algorihms will do work:
 in order to access the (i, j)th element we use matrixname.data[i][j].
 this format can only be used inside the member functions, since data
 is private.
+So you don't really need to worry about this unless you want to write additional functionality
 
     
 
@@ -43,8 +40,6 @@ is private.
 #include <utility>
 #include <vector>
 #include <initializer_list>
-#include <random>
-#include <fstream>
 #include <string>
 
 using std::string;
@@ -54,12 +49,13 @@ using std::pair;
 using std::initializer_list;
 using std::cout; using std::cin;
 using std::istream; using std::ostream;
-using std::default_random_engine;
-using std::uniform_int_distribution;
-using std::ifstream; using std::ofstream;
 
 //std_matrix means vector of vectors.
 //using vec<vec> > can get confuing in a hurry, so I used this
+
+
+namespace LAlib{
+
 using std_matrix = vector<vector<double> >;
 
 
@@ -84,12 +80,14 @@ class Matrix{
   //fill matrix using other matrices
   Matrix(initializer_list<Matrix> matrices);
   
-
+  //fill matrix using vectors
+  Matrix(initializer_list<vector<double>> vectors);
+  
   //GETTERS:
 
   //pair<unsigned, unsigned> getOrder();
-  //this function returns the order of a matrix as a pair, so
-  //to use it we must use mymatrix.getOrder().first or .second;
+  //this function returns the order of a matrix as a pair
+  //to get either part you can use getOrder().first or .second
   pair<unsigned, unsigned> getOrder()const;
 
   //SETTERS:
@@ -97,8 +95,6 @@ class Matrix{
   //setOrder();
   //note: this function is not to be used by itself, it will be used to
   //update the order when data is pushed into the matrix.
-  //I may also swap this function out for a more efficient one later,
-  //this is primarily for debugging right now, so I can test the getters.
   //n is the number of rows, and m is the number of collumns.
   void setOrder(unsigned n, unsigned m);
   
@@ -111,43 +107,33 @@ class Matrix{
   
   //void fillMatrixE
   //this will fill a matrix to nxm with all values equal to 0
-  //that's about it! it will be used for constructor and other fillers
+  //that's about it! it will be used for initializing matrices to the correct size
   void fillMatrixE(unsigned n, unsigned m); //E stands for empty
   
   //void fill MatrixI.
-  //I want to use this for debugging, so i can quickly fill a matrix
-  //with values I choose at run time.
+  //this is for filling a matrix
+  //with values you choose at run time.
   //it needs an isteam, such as cin or an ifstream
   //it is important to note that it fills the first COLLUMN first, then moves
-  //to the next collumn.  This is oposite of what someone might find intuitive.  I am trying to change this right now
+  //to the next collumn.  This is oposite of what someone might find intuitive.
+  //the first argument is the number of rows
   void fillMatrixI(unsigned n, unsigned m, istream& in);
   // I stands for input stream
 
-
-  //void fillMatrixR:
-  //this is like the last one, but it will fill the matrix to order nxm
-  //with random values
-  //I will write them so that they can be used on empty or already filled
-  //matrices.  That means they need to erase the matrix before filling it
-  void fillMatrixR(unsigned n, unsigned m, int low_bound, int high_bound);
-  //r stands for random,
 
   //void fillMatrixL:
   //this is a function that fills a matrix, given an initializer list
   //of matrices that have the same number of rows (if they are nxm, then
   //their n values are equal.
   void fillMatrixL(initializer_list<Matrix> matrices);
-  //l stands for list
+  //L stands for list
 
-  //void fillMatrixF
-  //fills a matrix from input from a file.
-  //it will take the input such that, if the numbers in the file are
-  //seperated by whitespace, and arranged in a square, it will fill
-  //the matrix accordingly. i.e. it will take the first number and put
-  //it in the top left cell, then the second number it encounters will
-  //go in the cell to the right, and so on.
-  //void fillMatrixF(unsigned n, unsigned m, string filename);
-  //F stands for file
+  //void fillMatrixV:
+  //this is a function that fills a matrix given a list of vectors,
+  //which do not need to be predefined.  i.e.
+  //matrix1.fillMatrixV({1, 2, 3}, {1, 2, 3}); will yeild a 2x3 matrix
+  //need to make a function that will accept a bracket enclosed list.
+  void fillMatrixV(initializer_list<vector<double>> vectors);
   
   //void reset();
   //this will do as it sounds, and reset the matrix fully to an empty matrix
@@ -166,6 +152,8 @@ class Matrix{
   //mult operator overload
   //this is exactly what it sounds like, it multiplies
   //matrices together to form a new matrix which is the product.
+  //if you are unfamiliar with matrix multiplication operations,
+  //I suggest you google it, it is not intuitive at all
   Matrix operator* (const Matrix& m1);
 
   //addition operator overload
@@ -173,5 +161,6 @@ class Matrix{
   //argument matrices together
   Matrix operator+ (const Matrix& m1);
 
-};
+};//end class
 
+}//end namespace

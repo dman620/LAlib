@@ -1,9 +1,12 @@
 //Programmer: Derek Mandl
 //this is the implementation file for LAlib.h
+//LAlib.h and LAlib.cpp comprise all of the code for this project, not including the make file
 //see LAlib.h for more information.
-//it houses a main only for debugging purposes
+//if you intend to use this file, you must create a main somewhere
+//it will not compile by itself
 
 #include "LAlib.h"
+using namespace LAlib;
 
 //CONSTRUCTORS:
 Matrix::Matrix(unsigned n, unsigned m){
@@ -18,6 +21,9 @@ Matrix::Matrix(initializer_list<Matrix> matrices){
   fillMatrixL(matrices);
 }
 
+Matrix::Matrix(initializer_list<vector<double>> vectors){
+  fillMatrixV(vectors);
+}
 
 //GETTERS:
 pair<unsigned, unsigned> Matrix::getOrder()const{
@@ -42,7 +48,7 @@ void Matrix::fillMatrixE(unsigned n, unsigned m){
   setOrder(n, m);
 }//end func
 
-void Matrix::fillMatrixI(unsigned n, unsigned m, istream& in){
+void LAlib::Matrix::fillMatrixI(unsigned n, unsigned m, istream& in){
   //fill matrix to size with empty values first
   fillMatrixE(n, m);
 
@@ -59,25 +65,6 @@ void Matrix::reset(){
   data.clear();
 }//end func
 
-void Matrix::fillMatrixR(unsigned n, unsigned m, int low_bound, int high_bound){
-  default_random_engine dre;
-  if(low_bound > high_bound){
-    cout << "ERROR 02 - INVALID BOUNDS\n";
-    return;
-  }
-  uniform_int_distribution<int> dr(low_bound, high_bound);
-  dre.seed(time(nullptr));
-
-  fillMatrixE(n, m);
-  
-  for(unsigned i = 0; i < n; i++){
-    for(unsigned j = 0; j < m; j++){
-      data[i][j] = dr(dre);
-      //cout << dr(dre) << " ";
-    }//end for#2
-  }//end for#1
-}//end func
-
 void Matrix::fillMatrixL(initializer_list<Matrix> matrices){
   unsigned num_of_rows = matrices.begin()->order.first;
   unsigned num_of_collumns = 0;
@@ -85,9 +72,11 @@ void Matrix::fillMatrixL(initializer_list<Matrix> matrices){
     if(args.order.first != num_of_rows){
       cout << "ERROR 01 - ORDER MISMATCH\n";
       return;
-      }
+    }//endif
     num_of_collumns += args.order.second;
-  }
+    //this will add onto the number of collumns by 1 for a 4x1 matrix
+    //or 3 for a 4x3 matrix for examples
+  }//endfor
   fillMatrixE(num_of_rows, num_of_collumns);
 
   //this will fill the calling matrix with the initializer matrices:
@@ -100,18 +89,26 @@ void Matrix::fillMatrixL(initializer_list<Matrix> matrices){
   }//end for args
 }//end func
 
+void Matrix::fillMatrixV(initializer_list<vector<double>> vectors){
+  unsigned num_of_rows = vectors.begin()->size();
+  unsigned num_of_coll = 0;
+  for(vector<double> args : vectors){//for all arguments in the init. list
+    if(args.size() != num_of_rows){
+      cout << "ERROR 01 - ORDER MISMATCH\n";
+      return;
+    }//endif
+    num_of_coll ++;
+  }//endfor
+  fillMatrixE(num_of_rows, num_of_coll);
 
-/*
-void Matrix::fillMatrixF(unsigned n, unsigned m, string filename){
-  ifstream fin;
-  fin.open(filename);
-  if(fin.fail()){
-    cout << "ERROR 03 - FILE NOT FOUND\n";
-    return;
-  }
-
-}
-*/
+  //this will fill the calling matrix with the initializer vectors:
+  unsigned i = 0;
+  for (vector<double> args: vectors){
+    //need to fill a matrix based on a vector here.
+    data[i] = args;
+    i++;
+  }//end for
+}//end func
 
 void Matrix::print(ostream& out){
   order = getOrder();
@@ -124,23 +121,6 @@ void Matrix::print(ostream& out){
     cout << '\n';
   }//end for#1
 }//end func
-
-/*
-void Matrix::print_clean(ostream& out){
-
-}
-this is a planned function which will print a matrix, but it will
-insert spaces as needed to make each column appear to be in a
-collumn.  imagine a matrix with values 1 1 10000 1 1
-the extra 0's in the 10000 will throw the others off and make them
-appear to not be in a collumn.  this will be easy to fix, with %10
-operations and inserting spaces
-i will need a func called find_largest_value
-
-double Matrix::find_largest_value(){
-
-}
-*/
 
 Matrix Matrix::operator* (const Matrix& m1){
   Matrix product;
@@ -173,50 +153,65 @@ Matrix Matrix::operator* (const Matrix& m1){
 return product;
 }//end func
 
-/*
-Matrix operator+ (const Matrix& m1){
-  Matrix product;
-  //n is the order of the product matrix
+
+Matrix Matrix::operator+ (const Matrix& m1){
+  Matrix result;//this matrix will store the resulting matrix of the addition
+
   if(this->order != m1.order){
     cout << "ERROR 01 - ORDER MISMATCH\n";
-    return product;
+    return result;
   }
+  unsigned n = this->order.first; unsigned m = this->order.second;
+  //n and m are the dimensions of all matrices. (since they are the same)
+  result.fillMatrixE(n, m);
+  
+  for(unsigned i = 0; i < m; i++){
+    for(unsigned j = 0; j < n; j++){
+      result.data[i][j] += data[i][j] + m1.data[i][j];
+    }//end forj
+  }//end fori
+  return result;
+}//end func
+
+int main(){return 0;}
 
 
+/*
+this is how to use the fillMatrixL function
+
+int main(){
+  
+  Matrix a;
+  Matrix b;
+  Matrix c;
+ 
+  a.fillMatrixV({{1, 2, 3,}, {4, 5, 6}});
+  b.fillMatrixV({{7, 8, 9}});
+  c.fillMatrixL({a, b});
+
+  c.print(cout);
+  
+  return 0;
 }
-*/
+this is the output:
+1 4 7 
+2 5 8 
+3 6 9 
 
 
 
 
+this is how to use the fillMatrixV function,
 
-
-//this is for debugging purposes
-//this is where I am testing all functions and classes
 int main(){
   Matrix matrix1;
   Matrix matrix2;
   Matrix matrix3;
 
-  //this creates some sort of memory error, however everything works
-  //flawlessly when I make them all 2 x 2so that's either it has to
-  //be square or it has to be small.  I will fix later
-
+  matrix1.fillMatrixV({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+  matrix2.fillMatrixV({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
   
-  
-  /*initializer list test
-  matrix1.fillMatrixI(4, 2, cin);
-  matrix2.fillMatrixI(4, 1, cin);
   matrix3.fillMatrixL({matrix1, matrix2});
-  */
-
-  /*multiplication test
-  matrix1.fillMatrixI(2, 4, cin);
-  matrix2.fillMatrixI(4, 2, cin);
-  matrix3 = matrix1*matrix2;
-  */
- 
-  
   
   matrix1.print(cout);
   cout << '\n';
@@ -224,7 +219,21 @@ int main(){
   cout << '\n';
   matrix3.print(cout);
   cout << '\n';
-  
-  
+    
   return 0;
 }
+output:
+
+1 4 7 
+2 5 8 
+3 6 9 
+
+1 4 7 
+2 5 8 
+3 6 9 
+
+1 4 7 1 4 7 
+2 5 8 2 5 8 
+3 6 9 3 6 9 
+
+*/
